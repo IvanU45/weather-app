@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'weather/css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="city" placeholder="Enter city name">
+            <button type="submit">Get Weather</button>
+        </form>
+        {% if data %}
+            <div class="weather-info">
+                {% for day in data.forecast.forecastday %}
+                    <div class="weather-day">
+                        <div>
+                            <h2>{{ day.date }}</h2>
+                            <p>Temperature: {{ day.day.avgtemp_c }}°C</p>
+                            <p>Weather: {{ day.day.condition.text }}</p>
+                            <p>Humidity: {{ day.day.avghumidity }}%</p>
+                        </div>
+                        <img src="{{ day.day.condition.icon }}">
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
